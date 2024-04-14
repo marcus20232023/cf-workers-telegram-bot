@@ -1,4 +1,4 @@
-name = "cf-workers-telegram-bot"
+name = "workers-telegram-ai"
 main = "packages/worker/dist/worker/src/worker.mjs"
 
 workers_dev = true
