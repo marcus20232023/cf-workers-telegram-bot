@@ -24,8 +24,9 @@ jobs:
           restore-keys: node-modules-
       - run: npm i
       - run: npm ci
-      - run: npm run lint
-      - run: npm run build
+      - run: npm run lint --workspace=packages
+      - run: npm run test --workspace=packages
+      - run: npm run build --workspace=packages
   merge-dependabot:
     needs: build
     runs-on: ubuntu-latest

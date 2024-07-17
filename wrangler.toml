@@ -1,10 +1,11 @@
-name = "cf-workers-telegram-bot"
-main = "packages/worker/dist/worker/src/worker.mjs"
+name = "cf-workers-telegram-bot-v2"
+main = "packages/worker/src/worker.ts"
 
 workers_dev = true
-compatibility_date = "2023-10-24"
+compatibility_date = "2024-05-13"
 
-build.command = "npm install && npm run build:worker"
+[placement]
+mode = "smart"
 
 [ai]
 binding = "AI"

@@ -4,16 +4,23 @@
 	"author": "codebam",
 	"license": "Apache-2.0",
 	"scripts": {
-		"build": "lerna run build",
-		"build:worker": "lerna run build --scope=worker",
-		"release": "lerna version minor -y",
-		"publish": "lerna publish -y from-git",
-		"lint": "lerna run lint"
+		"build": "npm run build --workspaces",
+		"build:worker": "npm run build --workspace=packages/worker",
+		"test": "npm run test --workspaces",
+		"test:worker": "npm run test --workspace=packages/worker",
+		"test:main": "npm run test --workspace=packages/main",
+		"lint": "npm run lint --workspaces"
 	},
 	"workspaces": [
-		"packages/*"
+		"packages/main",
+		"packages/worker"
 	],
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^6.15.0"
+		"@types/marked": "^6.0.0",
+		"@typescript-eslint/eslint-plugin": "^7.11.0",
+		"typedoc": "^0.25.13"
+	},
+	"dependencies": {
+		"marked": "^12.0.2"
 	}
 }

@@ -8,8 +8,10 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
       - name: github release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
@@ -19,20 +21,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
       - id: node-modules-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
           restore-keys: node-modules-
       - name: cloudflare workers publish
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           preCommands: |
             # wrangler kv:namespace create KV_GET_SET
             # wrangler kv:namespace create KV_UID_DATA

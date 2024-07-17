@@ -1,25 +1,19 @@
-import { WebhookCommands } from "./types";
-import { JSONResponse } from "./libs";
-
 export default class Webhook {
 	api: URL;
-	token: string;
-	url: URL;
-	commands: WebhookCommands;
+	webhook: URL;
 
-	constructor(api: URL, token: string, url: URL) {
-		this.api = api;
-		this.token = token;
-		this.url = url;
-		this.commands = {
-			default: () =>
-				new Promise<Response>(() =>
-					JSONResponse({ error: "Invalid command" }, 400)
-				),
-		};
+	constructor(token: string, request: Request) {
+		this.api = new URL('https://api.telegram.org/bot' + token);
+		this.webhook = new URL(new URL(request.url).origin + `/${token}`);
 	}
 
-	process = async (url: URL): Promise<Response> =>
-		this.commands[url.searchParams.get("command") ?? ""]?.() ??
-		this.commands.default;
+	async set() {
+		const url = new URL(`${this.api.origin}${this.api.pathname}/setWebhook`);
+		const params = url.searchParams;
+		params.append('url', this.webhook.toString());
+		params.append('max_connections', '100');
+		params.append('allowed_updates', JSON.stringify(['message', 'inline_query']));
+		params.append('drop_pending_updates', 'true');
+		return await fetch(`${url.toString()}?${params.toString()}`);
+	}
 }
